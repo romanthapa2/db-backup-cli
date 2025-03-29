@@ -5,7 +5,7 @@ import ora from "ora";
 
 export async function createMongoDBBackup(config) {
   try {
-    let command = `mongodump --uri=${config.uri} --db=${config.databaseName} --out=${config.backupDir}`;
+    let command = `mongodump --uri=${config.uri} --db=${config.databaseName} --out=${config.backupDir} --gzip`;
     await testMongoDBConnection(config);
 
     console.log(chalk.blue("Creating backup..."));
@@ -40,7 +40,7 @@ export async function restoreMongoDBBackup(config) {
       return;
     }
 
-    let command = `mongorestore --uri=${config.uri} --db=${config.databaseName} ${config.backupDir}`;
+    let command = `mongorestore --uri=${config.uri} --db=${config.databaseName} ${config.backupDir} --gzip`;
 
     exec(command, (error, _, stderr) => {
       if (error || !stderr) {

@@ -18,10 +18,16 @@ async function getDatabaseConfig(dbType) {
         port: await input({
           message: `Enter port:`,
           default: dbType === "mysql" ? "3306" : "5432",
+          required:true
         }),
         user: await input({ message: "Enter username:" }),
         password: await password({ message: "Enter password:" }),
         database: await input({ message: "Enter database name:" }),
+        backupDir: await input({
+          message: "Enter the path to save backup files:",
+          default: "./backup",
+          required: true,
+        }),
       };
 
     case "sqlite":
@@ -29,6 +35,16 @@ async function getDatabaseConfig(dbType) {
         filepath: await input({
           message: "Enter SQLite file path:",
           default: "./database.sqlite",
+          required:true
+        }),
+        databaseName: await input({
+          message: "Enter database name:",
+          required: true,
+        }),
+        backupDir: await input({
+          message: "Enter the path to save backup files:",
+          default: "./backup",
+          required: true,
         }),
       };
 
@@ -37,8 +53,14 @@ async function getDatabaseConfig(dbType) {
         uri: await input({
           message: "Enter MongoDB connection URI:",
           default: "mongodb://localhost:27017",
+          required:true
         }),
-        database: await input({ message: "Enter database name:" }),
+        database: await input({ message: "Enter database name:",required:true }),
+        backupDir: await input({
+          message: "Enter backup directory:",
+          default: "./backup",
+          required:true
+        }),
       };
 
     default:
@@ -72,6 +94,7 @@ module.exports = (program) => {
             { name: "SQLite", value: "sqlite" },
             { name: "MongoDB", value: "mongodb" },
           ],
+          required:true
         });
 
         // Get database config based on selection
