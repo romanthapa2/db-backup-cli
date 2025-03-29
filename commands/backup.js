@@ -1,8 +1,17 @@
 const getConfig = require("../utils/getConfig.js");
- const createMYSQLBackup = require("../utils/mysql-backup.js");
- const createMongoDBBackup = require("../utils/mongodb-backup.js");
+ import { MongoDBBackup } from "../lib/backups/mongodbBackup.js";
  
- module.exports = (program) => {
+ function getBackupClass(config) {
+   switch (config.type) {
+     case "mongodb":
+       return new MongoDBBackup(config);
+     // Add cases for other databases
+     default:
+       throw new Error("Unsupported database type");
+   }
+ }
+ 
+export default(program) => {
    program
      .command("backup")
      .description("Backup database")
@@ -10,16 +19,7 @@ const getConfig = require("../utils/getConfig.js");
      .action(async (_, options) => {
        const config = await getConfig();
  
-       switch (config.type) {
-         case "mysql":
-           await createMYSQLBackup(config);
-           break;
-         case "mongodb":
-           await createMongoDBBackup(config, options);
-           break;
- 
-         default:
-           break;z``
-       }
+       const backuoInstance = getBackupClass(config);
+       await backuoInstance.createBackup();
      });
  };

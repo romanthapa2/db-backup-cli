@@ -66,7 +66,7 @@ async function getDatabaseConfig(dbType) {
     default:
       throw new Error("Unsupported database type.");
   }
-}
+} 
 
 /**
  * Save the database configuration to a JSON file.

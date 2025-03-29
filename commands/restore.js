@@ -1,26 +1,31 @@
 import getConfig from "../lib/getConfig.js";
- import { restoreMongoDBBackup } from "../lib/mongodb/mongodb-backup.js";
- 
- export default (program) => {
-   program
-     .command("restore")
-     .description("Restore database from backup")
-     .option(
-       "--config <path>",
-       "Path to configuration file",
-       "./backup-config.json"
-     )
-     .option("-c, --collection <name>", "Specify the collection name")
-     .action(async (options) => {
-       console.log(options);
-       const config = await getConfig(options.config);
- 
-       switch (config.type) {
-         case "mongodb":
-           await restoreMongoDBBackup(config);
-           break;
-         default:
-           console.log("Unsupported database type");
-       }
-     });
- };
+import { MongoDBBackup } from "../lib/backups/mongodbBackup.js";
+
+function getBackupClass(config) {
+  switch (config.type) {
+    case "mongodb":
+      return new MongoDBBackup(config);
+    // Add cases for other databases, e.g., MySQL, SQLite
+    default:
+      throw new Error("Unsupported database type");
+  }
+}
+
+export default (program) => {
+  program
+    .command("restore")
+    .description("Restore database from backup")
+    .option("--config <path>", "Path to configuration file", "./backup-config.json")
+    .option("-c, --collection <name>", "Specify the collection name")
+    .action(async (options) => {
+      console.log(options);
+      const config = await getConfig(options.config);
+
+      try {
+        const backupInstance = getBackupClass(config);
+        await backupInstance.restoreBackup(options); // Assuming the restore method can take options if needed
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+};
