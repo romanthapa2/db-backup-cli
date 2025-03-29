@@ -3,6 +3,7 @@ const { Command } = require("commander");
  const packageJson = require("./package.json");
  require("./commands/configure")(program);
  require("./commands/backup")(program)
+ require("./commands/restore")(program)
  
  program
    .name("backlash")

@@ -5,7 +5,7 @@ import ora from "ora";
 
 export async function createMongoDBBackup(config) {
   try {
-    let command = `mongodump --uri=${config.uri} --db=${config.databaseName} --out=${config.outputDir}`;
+    let command = `mongodump --uri=${config.uri} --db=${config.databaseName} --out=${config.backupDir}`;
     await testMongoDBConnection(config);
 
     console.log(chalk.blue("Creating backup..."));
@@ -28,5 +28,28 @@ export async function createMongoDBBackup(config) {
     });
   } catch (error) {
     spinner.fail(chalk.red("Error creating backup"));
+  }
+}
+
+export async function restoreMongoDBBackup(config) {
+  const spinner = ora("Restoring backup").start();
+
+  try {
+    const connection = await testMongoDBConnection(config, spinner);
+    if (!connection) {
+      return;
+    }
+
+    let command = `mongorestore --uri=${config.uri} --db=${config.databaseName} ${config.backupDir}`;
+
+    exec(command, (error, _, stderr) => {
+      if (error || !stderr) {
+        spinner.fail(chalk.red("Failed to restore backup"));
+        return;
+      }
+      spinner.succeed(chalk.green("Backup restored successfully"));
+    });
+  } catch (error) {
+    spinner.fail(chalk.red("Failed to restore backup"));
   }
 }
