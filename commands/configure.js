@@ -35,24 +35,6 @@ async function getDatabaseConfig(dbType) {
         }),
       };
 
-    case "sqlite":
-      return {
-        filepath: await input({
-          message: "Enter SQLite file path:",
-          default: "./database.sqlite",
-          required:true
-        }),
-        databaseName: await input({
-          message: "Enter database name:",
-          required: true,
-        }),
-        backupDir: await input({
-          message: "Enter the path to save backup files:",
-          default: "./backup",
-          required: true,
-        }),
-      };
-
     case "mongodb":
       return {
         uri: await input({
@@ -95,8 +77,6 @@ export default (program) => {
           message: "Select database type",
           choices: [
             { name: "MySQL", value: "mysql" },
-            { name: "PostgreSQL", value: "postgresql" },
-            { name: "SQLite", value: "sqlite" },
             { name: "MongoDB", value: "mongodb" },
           ],
           required:true
