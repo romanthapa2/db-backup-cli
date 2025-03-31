@@ -1,5 +1,6 @@
 {
   "type": "mongodb",
-  "uri": "mongodb://localhost:27017",
-  "database": ""
+  "uri": "fewfe",
+  "database": "few",
+  "backupDir": "few"
 }

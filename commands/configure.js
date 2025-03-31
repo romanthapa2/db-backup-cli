@@ -1,6 +1,11 @@
-const path = require("path");
-const fs = require("fs");
-const { input, select, password } = require("@inquirer/prompts");
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { input, select, password } from "@inquirer/prompts";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const CONFIG_PATH = path.join(__dirname, "../backup-config.json");
 
@@ -79,7 +84,7 @@ function saveConfig(dbType, config) {
   console.log(`Configuration saved to ${CONFIG_PATH}`);
 }
 
-module.exports = (program) => {
+export default (program) => {
   program
     .command("configure")
     .description("Configure database connection settings")
