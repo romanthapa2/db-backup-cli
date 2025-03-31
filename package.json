@@ -8,6 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node cli.js"
   },
+  "bin": {
+    "backlash": "./backlash"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

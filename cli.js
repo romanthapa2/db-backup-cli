@@ -1,3 +1,5 @@
+#!/usr/bin/env node --experimental-modules
+
 import { Command } from "commander";
 import { fileURLToPath } from "url";
 import { dirname } from "path";

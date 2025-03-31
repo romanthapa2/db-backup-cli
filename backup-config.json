@@ -1,6 +1,6 @@
 {
   "type": "mongodb",
-  "uri": "fewfe",
+  "uri": "fe",
   "database": "few",
-  "backupDir": "few"
+  "backupDir": "fw"
 }
