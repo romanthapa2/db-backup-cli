@@ -23,23 +23,24 @@ export default (program) => {
     .action(async (_, options) => {
       const config = await getConfig();
 
-      const backuoInstance = getBackupClass(config);
+      const backupInstance = getBackupClass(config);
       const startTime = Date.now();
-       let status = "success";
-       let error = null;
-       let stderr = null;
+      let status = "success";
+      let error = null;
+      let stderr = null;
  
-       try {
+      try {
         const { info } = await backupInstance.createBackup();
         console.log(info);
         stderr = info;
-       } catch (err) {
-         status = "failed";
-         error = err;
-       }
+      } catch (err) {
+        status = "failed";
+        error = err;
+        console.error("Backup failed:", err.message);
+      }
  
-       const endTime = Date.now();
-       logActivity({
+      const endTime = Date.now();
+      logActivity({
         command: "backup",
          startTime: new Date(startTime),
          endTime: new Date(endTime),
@@ -47,6 +48,6 @@ export default (program) => {
          timeTaken: endTime - startTime,
          stderr,
          error,
-       });
+      });
     });
 };
