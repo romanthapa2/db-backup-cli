@@ -9,7 +9,7 @@
     "start": "node cli.js"
   },
   "bin": {
-    "backlash": "./backlash"
+    "backlash": "./cli.js"
   },
   "keywords": [],
   "author": "",
