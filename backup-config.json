@@ -1,6 +1,0 @@
-{
-  "type": "mongodb",
-  "uri": "mongodb+srv://thaparoman970:WQSQnY4pa5I5BfOn@ecommerce.yixmomp.mongodb.net/?retryWrites=true&w=majority&appName=ecommerce",
-  "database": "test",
-  "backupDir": "./backup"
-}
